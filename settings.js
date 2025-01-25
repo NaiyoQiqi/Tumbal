@@ -1,37 +1,37 @@
 const fs = require('fs');
 const chalk = require('chalk');
 
-global.ytname = 'YouTube: zal_x_u' // Nama YouTube Kamu
-global.socialm = 'GitHub: ???' // Nama GitHub Kamu
-global.location = '11 Naitōmachi, Shinjuku City, Tokyo 160-0014, Jepang' // Lokasi Kamu
+global.ytname = 'HirakoSenpai' // Nama YouTube Kamu
+global.socialm = 'Feyy.S15' // Nama GitHub Kamu
+global.location = '1228, Lorong 7, Kampung Merbau Sempak, 47000 Sungai Buloh, Selangor, Malaysia' // Lokasi Kamu
 
-global.botName = 'Mora AI' // Nama Bot Kamu
-global.ownerNumber = '628812722419' // Nomor Kamu
-global.ownerName = 'K.R' // Nama Kamu
-global.website = 'https://rizaldev.my.canva.site/webs' // Web Kamu
-global.wagc = 'https://rizaldev.my.canva.site/webs' // Web Kamu
-global.packname = 'Mora AI' // Nama Pack
-global.author = 'K.R' // Nama Author
-global.creator = '628812722419@s.whatsapp.net' // Nomor Creator
-global.premium = ['628812722419', '6283119115977', '6288213993436'] // User Premium
+global.botName = 'Xenovia AI' // Nama Bot Kamu
+global.ownerNumber = '6289601671818' // Nomor Kamu
+global.ownerName = 'Feyy' // Nama Kamu
+global.website = 'Xenovia.com' // Web Kamu
+global.wagc = '' // Web Kamu
+global.packname = 'Xenovia AI' // Nama Pack
+global.author = 'Feyy_S15' // Nama Author
+global.creator = '6289601671818@s.whatsapp.net' // Nomor Creator
+global.premium = ['6289601671818', '628988219165'] // User Premium
 global.hituet = 0 // Hit Command
-global.prefa = '.'; // Prefix
+global.prefa = ''; // Prefix
 global.tempatDB = 'database.json'; // Tempat Database
 
-global.saluran = '120363363009408737@newsletter' // ID Saluran Kamu
-global.saluranName = 'Mora AI User Service | K.R' // Nama Saluran Kamu
+global.saluran = '' // ID Saluran Kamu
+global.saluranName = '' // Nama Saluran Kamu
 global.sessionName = 'session' // Nama Folder Sesi Bot Kamu
 
-global.panel = 'https://domainlu.my.id'; // Link Panel Kamu
-global.cred = 'ptla_klUmglK7fADLZ5Br8jOwSh65IDeWAYRZuI6iQ1BIj'; // API PTLA Kamu
-global.apiuser = 'ptlc_QTOmFi0ZDh0QBE5LtwCkBzSFWPZTIpz901lNybolo'; // API PTLC Kamu
+global.panel = ''; // Link Panel Kamu
+global.cred = ''; // API PTLA Kamu
+global.apiuser = ''; // API PTLC Kamu
 global.eggs = '15', // Eggs Number (Recommended)
 global.nets = '5', // Nets Number (Recommended)
 global.location = '1', // Location Number (Recommended)
 
 global.typereply = 'v4' // Gaya Reply v1-v4
-global.autoblocknumber = '62' // Auto Block Number
-global.antiforeignnumber = '62' // Anti Foreign Number
+global.autoblocknumber = '01' // Auto Block Number
+global.antiforeignnumber = '01' // Anti Foreign Number
 global.welcome = true // Auto Welcome Msg
 global.anticall = true // Anti Call
 global.autoswview = true // Auto View Status
