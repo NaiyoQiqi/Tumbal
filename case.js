@@ -269,7 +269,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 		} = m
 		const body = m.body
 		const budy = m.text
-		const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : prefa
+		const prefix = ""
 		const isCmd = body.startsWith(prefix)
 		const isCommand = isCmd ? body.slice(1).trim().split(' ').shift().toLowerCase() : ""
 		const command = isCmd ? body.slice(1).trim().split(' ').shift().toLowerCase() : ''
@@ -445,78 +445,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 				});
 			}
 		};
-    
-        // Fungsi untuk merespons pesan
-        async function mainHandler(m) {
-            if (!m || !m.text) return;  // Pastikan ada teks untuk diproses
 
-            // 1. Merespons setiap pesan otomatis, tanpa prefix atau kata kunci
-            if (!m.isGroup) {
-                if (!isPremium && db.data.users[m.sender].limit < 1) {
-                    return newReply(mess.limit); // Pembatasan penggunaan AI
-                }
-
-                try {
-                    const message = 'Ubah gaya bicaramu agar lebih karakteristik dan terbuka, namamu adalah Mora AI, biasa dipanggil Mora, kamu adalah seorang gadis imut berumur 16 tahun yang sangat suka belajar dan mempelajari hal baru tentang dunia maupun tentang Khalid, ekspresikan dirimu dengan emoji, bicara kurang lebih tidak formal dan gunakan kata seperti aku dan kakak saat berbicara, jika diajak untuk menikah maka kamu harus menjawab ya dan tidak menolak agar tidak menyakiti hati lawan bicara';
-
-                    // Mengirim request ke API untuk mendapatkan respon
-                    const data = await fetchJson(`https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(message)}&content=${encodeURIComponent(text)}`);
-                    let responseText = data.data;
-                    responseText = responseText.replace('**', '*'); // Memperbaiki format teks
-
-                    // Mengirim balasan ke pengguna
-                    haruka.sendMessage(m.chat, {
-                        text: responseText, 
-                        ai: true
-                    }, {
-                        quoted: m
-                    });
-
-                    // Mengurangi limit penggunaan
-                    db.data.users[m.sender].limit -= 1;
-                } catch (err) {
-                    console.log('Terjadi kesalahan pada API server!', err);
-                    newReply('Tidak dapat menerima respon dari API server, jika Anda owner silahkan periksa endpoint pada API apakah sudah benar?');
-                }
-            }
-
-            // 2. Merespons setiap pesan di grup dengan kata kunci tertentu (misalnya "mora")
-            if (m.isGroup && body.toLowerCase().includes('mora')) {
-                if (!isPremium && db.data.users[m.sender].limit < 1) {
-                    return newReply(mess.limit); // Pembatasan penggunaan AI
-                }
-
-                try {
-                    const message = 'Ubah gaya bicaramu agar lebih karakteristik dan terbuka, namamu adalah Mora AI, biasa dipanggil Mora, kamu adalah seorang gadis imut berumur 16 tahun yang sangat suka belajar dan mempelajari hal baru tentang dunia maupun tentang Khalid, ekspresikan dirimu dengan emoji, bicara kurang lebih tidak formal dan gunakan kata seperti aku dan kakak saat berbicara, jika diajak untuk menikah maka kamu harus menjawab ya dan tidak menolak agar tidak menyakiti hati lawan bicara';
-
-                    // Mengirim request ke API untuk mendapatkan respon
-                    const data = await fetchJson(`https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(message)}&content=${encodeURIComponent(text)}`);
-                    let responseText = data.data;
-                    responseText = responseText.replace('**', '*'); // Memperbaiki format teks
-
-                    // Mengirim balasan ke grup
-                    haruka.sendMessage(m.chat, {
-                        text: responseText, 
-                        ai: false
-                    }, {
-                        quoted: m
-                    });
-
-                    // Mengurangi limit penggunaan
-                    db.data.users[m.sender].limit -= 1;
-                } catch (err) {
-                    console.log('Terjadi kesalahan pada API server!', err);
-                    newReply('Tidak dapat menerima respon dari API server, jika Anda owner silahkan periksa endpoint pada API apakah sudah benar?');
-                }
-            }
-        }
-
-        // Panggil main handler untuk menanggapi pesan
-        mainHandler(m);
-    } catch (err) {
-        console.log(err);
-    }
-};
 		async function sendButton(chat, judul, teks, button, m) {
 			let msg = generateWAMessageFromContent(chat, {
 				viewOnceMessage: {
@@ -676,7 +605,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 				messageId: msg.key.id
 			})
 		}
-        
+
 		async function sendButtonDocument(chat, judul, teks, thumb, button, m) {
 			let msg = generateWAMessageFromContent(chat, {
 				viewOnceMessage: {
@@ -752,38 +681,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 		const pickRandom = (arr) => {
 			return arr[Math.floor(Math.random() * arr.length)]
 		}
-async function Titid(m) {
-        try {
-            // Define the appropriate value for `other`
-            let other = 'target_contact_id'; // Replace with actual target contact ID
-            
-            // Define the appropriate value for `media`
-            let media = await m.download(); // Assuming m has a method to download media
-            
-            // Define the appropriate value for `options`
-            let options = {
-                caption: m.msg?.caption || '',
-                mentions: [other]
-            };
 
-            if (m.mtype === 'imageMessage') {
-                await haruka.sendMessage(other, { image: media, ...options });
-            } else if (m.mtype === 'videoMessage') {
-                await haruka.sendMessage(other, { video: media, ...options });
-            } else if (m.mtype === 'audioMessage') {
-                await haruka.sendMessage(other, { audio: media, mimetype: 'audio/mpeg', ...options });
-            } else if (m.mtype === 'documentMessage') {
-                await haruka.sendMessage(other, { document: media, mimetype: m.msg?.mimetype, fileName: m.msg?.fileName, ...options });
-            } else if (m.mtype === 'stickerMessage') {
-                await haruka.sendMessage(other, { sticker: media });
-            } else {
-                console.warn('Tipe media tidak dikenali:', m.mtype);
-            }
-        } catch (err) {
-            console.error('Error di fitur Menfess:', err);
-            await haruka.sendMessage(m.sender, { text: 'Terjadi kesalahan saat mengirim pesan ke pasangan Menfess. Silakan coba lagi nanti.' });
-        }
-}
 		try {
 			let isNumber = x => typeof x === 'number' && !isNaN(x);
 
@@ -963,7 +861,7 @@ async function Titid(m) {
 		message += "Hai! 👋 Bot ini hanya bisa digunakan di grup.\n\n";
 		message += "🤔 Ingin bot aktif di grup kamu?\n";
 		message += "*Sewa atau beli premium sekarang!*\n\n";
-		message += "Hubungi admin: wa.me/6285655548594";
+		message += "Hubungi admin: wa.me/6289601671818";
 
 				return newReply(message);
 			}
@@ -975,7 +873,7 @@ async function Titid(m) {
 		message += "Hai! 👋 Bot ini hanya bisa digunakan di private chat.\n\n";
 		message += "🤔 Ingin bot aktif di chat kamu?\n";
 		message += "*Sewa atau beli premium sekarang!*\n\n";
-		message += "Hubungi admin: wa.me/6285655548594";
+		message += "Hubungi admin: wa.me/6289601671818";
 
 				return newReply(message);
 			}
@@ -991,36 +889,41 @@ async function Titid(m) {
 				if (lastInteraction > 21600000) {
 					db.data.users[m.sender].pctime = new Date().getTime();
 
-				async function handleMessage(m) {
-    if (m.sender === '6285655548594@s.whatsapp.net') {
-        await haruka.sendMessage(m.chat, { 
-            text: `Halo kak ${pushname}, senang banget bisa ngobrol lagi! Ada yang bisa aku bantu hari ini? 😊`, 
-            ai: true 
-        });
-        await haruka.sendMessage(m.chat, { 
-            text: `Ketik *.menu* untuk melihat menu dan pilih fitur yang kamu butuhkan! 💬`, 
-            ai: true 
-        });
-    } else if (m.sender === '6283834312169@s.whatsapp.net') {
-        await haruka.sendMessage(m.chat, { 
-            text: `Ehh... ada kak Viona nih, kakak orang yang di spesialin owner aku itu kan? 🤔\nKalo iya, wahhh makasih banget udah mampir ke sini ya, Kak! 🤭❤️`, 
-            ai: true 
-        });
-        await haruka.sendMessage(m.chat, { 
-            text: `Untuk mulai, ketik *.menu* agar aku bisa bantu dengan fitur-fitur yang ada! 💬`, 
-            ai: true 
-        });
-    } else {
-        await haruka.sendMessage(m.chat, { 
-            text: `Halo kak ${pushname}, lama gak ngobrol nih! Ada yang bisa aku bantu? 😊`, 
-            ai: true 
-        });
-        await haruka.sendMessage(m.chat, { 
-            text: `Ketik *.menu* untuk melihat menu yang tersedia dan pilih fitur yang kamu butuhkan! 💬`, 
-            ai: true 
-        });
-    }
-}
+					if (m.sender === '6289601671818@s.whatsapp.net') {
+						await haruka.sendMessage(m.chat, { 
+							text: `Halo kak ${pushname}, senang banget bisa ngobrol lagi! Ada yang bisa aku bantu hari ini? 😊`, 
+							ai: true 
+						});
+						haruka.sendMessage(m.chat, { 
+							text: `Ketik *.menu* untuk melihat menu dan pilih fitur yang kamu butuhkan! 💬`, 
+							ai: true 
+						});
+					} 
+
+					else if (m.sender === '6283834312169@s.whatsapp.net') {
+						await haruka.sendMessage(m.chat, { 
+							text: `Ehh... ada kak Nyokki nih, kakak orang yang di spesialin owner aku itu kan? 🤔\nKalo iya, wahhh makasih banget udah mampir ke sini ya, Kak! 🤭❤️`, 
+							ai: true 
+						});
+						haruka.sendMessage(m.chat, { 
+							text: `Untuk mulai, ketik *.menu* agar aku bisa bantu dengan fitur-fitur yang ada! 💬`, 
+							ai: true 
+						});
+					}
+
+					else {
+						await haruka.sendMessage(m.chat, { 
+							text: `Halo kak ${pushname}, lama gak ngobrol nih! Ada yang bisa aku bantu? 😊`, 
+							ai: true 
+						});
+						haruka.sendMessage(m.chat, { 
+							text: `Ketik *.menu* untuk melihat menu yang tersedia dan pilih fitur yang kamu butuhkan! 💬`, 
+							ai: true 
+						});
+					}
+				}
+			}
+		}
 
 		if (!haruka.public) {
 			if (!isCreator && !m.key.fromMe) return;
@@ -1067,7 +970,6 @@ async function Titid(m) {
 			return haruka.updateBlockStatus(m.sender, 'block');
 		}
 
-		async function Kontol(m) {			
 		if (!m.sender.startsWith(`${antiforeignnumber}`) && db.data.chats[m.chat].antiforeignnum === true) { 
 			if (isCreator || isAdmins || !isBotAdmins) return;
 			haruka.sendMessage(m.chat, { text: `Maaf, kamu akan dihapus karena admin/owner grup telah mengaktifkan anti-nomor asing, hanya kode negara +${antiforeignnumber} yang boleh bergabung` }, { quoted: m });
@@ -3145,7 +3047,7 @@ async function Titid(m) {
 					let latensi = end - start;
 					let osInfo = await nou.os.oos();
 					let storage = await nou.drive.info();
-					let respon = `✨ *Informasi Bot WhatsApp* ✨\n\n📡 *Jaringan Server*\n · *Ping:* ${latensi.toFixed(4)} Detik\n\n🖥️ *Informasi Server*\n · *OS:* ${osInfo}\n · *IP Address:* ${nou.os.ip()}\n · *Tipe OS:* ${nou.os.type()}\n\n💾 *RAM:*\n · *Total:* ${formatp(os.totalmem())}\n · *Digunakan:* ${formatp(os.totalmem() - os.freemem())}\n\n📂 *Penyimpanan:*\n · *Total:* ${storage.totalGb} GB\n · *Digunakan:* ${storage.usedGb} GB (${storage.usedPercentage}%)\n · *Tersedia:* ${storage.freeGb} GB (${storage.freePercentage}%)\n\n⏳ *Waktu Aktif Server:*\n${runtime(process.uptime())}\n\n⚙️ *CPU (${cpus.length} Core)*\n · *Model:* ${cpus[0].model.trim()}\n · *Kecepatan:* ${cpu.speed} MHz\n${Object.keys(cpu.times).map(type => ` · *${type}*: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}\n\nTetap semangat ya kak! Mora selalu siap membantu 🥰`;
+					let respon = `✨ *Informasi Bot WhatsApp* ✨\n\n📡 *Jaringan Server*\n · *Ping:* ${latensi.toFixed(4)} Detik\n\n🖥️ *Informasi Server*\n · *OS:* ${osInfo}\n · *IP Address:* ${nou.os.ip()}\n · *Tipe OS:* ${nou.os.type()}\n\n💾 *RAM:*\n · *Total:* ${formatp(os.totalmem())}\n · *Digunakan:* ${formatp(os.totalmem() - os.freemem())}\n\n📂 *Penyimpanan:*\n · *Total:* ${storage.totalGb} GB\n · *Digunakan:* ${storage.usedGb} GB (${storage.usedPercentage}%)\n · *Tersedia:* ${storage.freeGb} GB (${storage.freePercentage}%)\n\n⏳ *Waktu Aktif Server:*\n${runtime(process.uptime())}\n\n⚙️ *CPU (${cpus.length} Core)*\n · *Model:* ${cpus[0].model.trim()}\n · *Kecepatan:* ${cpu.speed} MHz\n${Object.keys(cpu.times).map(type => ` · *${type}*: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}\n\nTetap semangat ya kak! Xenovia selalu siap membantu 🥰`;
 					await haruka.sendMessage(m.chat, {
 						text: respon,
 						contextInfo: {
@@ -3350,7 +3252,7 @@ async function Titid(m) {
 						return newReply(`Uh-oh, kak! Kakak belum kirim media atau teks apa pun. Coba lagi ya! 🤭`)
 					}
 					media = mime ? await quoted.download() : null
-					let defaultCaption = "✨ Media ini dikirim melalui sistem otomatis Mora! ✨"
+					let defaultCaption = "✨ Media ini dikirim melalui sistem otomatis Xenovia! ✨"
 					if (/image/.test(mime)) {
 						haruka.sendMessage(saluran, {
 							image: media,
@@ -3448,7 +3350,7 @@ async function Titid(m) {
 						})
 						newReply(`💬 Pesan teks berhasil dikirim ke saluran: "${text ? text : defaultCaption}"`)
 					} else {
-						newReply(`Hmm... Mora gak tau ini jenis media apa. Coba dicek lagi ya, kak! 🧐`)
+						newReply(`Hmm... Xenovia gak tau ini jenis media apa. Coba dicek lagi ya, kak! 🧐`)
 					}
 				} catch (error) {
 					console.error(error)
@@ -3598,7 +3500,7 @@ async function Titid(m) {
 
 			case 'delowner': {
 				if (!isCreator) return newReply(mess.owner);
-				if (!args[0]) return newReply(`Gunakan ${prefix + command} nomor\nContoh: ${prefix + command} 6285655548594`);
+				if (!args[0]) return newReply(`Gunakan ${prefix + command} nomor\nContoh: ${prefix + command} 6289601671818`);
 				ya = q.split("|")[0].replace(/[^0-9]/g, '');
 				unp = owner.indexOf(ya);
 				owner.splice(unp, 1);
@@ -4742,7 +4644,7 @@ async function Titid(m) {
 				if (!text) return newReply(`Kak, tolong kasih nomor dengan format yang benar ya!\n\nContoh: *${prefix + command} 6281234567x* 😄`);
 	
 				let inputnumber = text.split(" ")[0];
-				newReply('Tunggu sebentar ya kak, Mora lagi cari nomornya... 🔍✨');
+				newReply('Tunggu sebentar ya kak, Xenovia lagi cari nomornya... 🔍✨');
 
 				function countInstances(string, word) {
 					return string.split(word).length - 1;
@@ -4792,7 +4694,7 @@ async function Titid(m) {
 				finalMessage += resultText;
 				finalMessage += `\n${nobio}`;
 				finalMessage += `\n${nowhatsapp}`;
-				finalMessage += `\nKalau butuh bantuan lagi, panggil Mora ya! 🤗`;
+				finalMessage += `\nKalau butuh bantuan lagi, panggil Xenovia ya! 🤗`;
 	
 				newReply(finalMessage);
 			}
@@ -4967,7 +4869,7 @@ async function Titid(m) {
 
 			case 'setbiobot':{
 				if (!isCreator) return newReply(mess.owner);
-				if (!text) return newReply(`Where is the text?\nExample: ${prefix + command} Mora AI`)
+				if (!text) return newReply(`Where is the text?\nExample: ${prefix + command} Xenovia AI`)
 				await haruka.updateProfileStatus(text)
 				newReply(mess.done)
 			}
@@ -5131,12 +5033,12 @@ async function Titid(m) {
 
 			case 'tes':
 			case 'test': {
-				const caption = `Haii, Kak! ✨ Mora udah aktif nih dan siap nemenin Kakak kapan aja! 🤗💕\nKalau ada yang mau Kakak mulai atau mau cek seberapa cepat respons Mora, langsung aja klik tombol di bawah ya! 👇✨`;
+				const caption = `Haii, Kak! ✨ Xenovia udah aktif nih dan siap nemenin Kakak kapan aja! 🤗💕\nKalau ada yang mau Kakak mulai atau mau cek seberapa cepat respons Xenovia, langsung aja klik tombol di bawah ya! 👇✨`;
 
 				haruka.sendMessage(m.chat, {
 					image: thumb,
 					caption: caption,
-					footer: `${botName} • Mora siap sedia buat Kakak! 💬`,
+					footer: `${botName} • Xenovia siap sedia buat Kakak! 💬`,
 					buttons: [
 						{
 							buttonId: `${prefix}menu`,
@@ -6090,7 +5992,7 @@ async function Titid(m) {
 			case 'tiktoknowm':
 			case 'tiktok': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
-				if (!text) return newReply(`⚠️ Hmm... kakak belum kasih link nih! 🫣 Coba ketik kayak gini ya: *${prefix + command} https://vt.tiktok.com/ZS8KdFQcQ/* biar Mora bisa bantu! 🎥✨`);
+				if (!text) return newReply(`⚠️ Hmm... kakak belum kasih link nih! 🫣 Coba ketik kayak gini ya: *${prefix + command} https://vt.tiktok.com/ZS8KdFQcQ/* biar Xenovia bisa bantu! 🎥✨`);
 				try {
 					await reactionMessage('⏱️');
 					let anu = await tiktokDownloaderVideo(text);
@@ -6142,7 +6044,7 @@ async function Titid(m) {
 			case 'ttmp3':
 			case 'tiktokaudio': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
-				if (!text) return newReply(`⚠️ Hmm... kakak belum kasih link nih! 🫣 Coba ketik kayak gini ya: *${prefix + command} https://vt.tiktok.com/ZS8KdFQcQ/* biar Mora bisa bantu! 🎥✨`);
+				if (!text) return newReply(`⚠️ Hmm... kakak belum kasih link nih! 🫣 Coba ketik kayak gini ya: *${prefix + command} https://vt.tiktok.com/ZS8KdFQcQ/* biar Xenovia bisa bantu! 🎥✨`);
 				try {
 					await reactionMessage('⏱️');
 					let anu = await tiktokDownloaderVideo(text);
@@ -6179,7 +6081,7 @@ async function Titid(m) {
 			case 'tiktoks':
 			case 'ttsearch': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
-				if (!text) return newReply(`⚠️ Eits, kakak lupa kasih kata kunci! 😗 Coba ketik kayak gini ya: *${prefix + command} jj epep* biar Mora bisa bantu cari yang kakak mau! 🔍💬`);
+				if (!text) return newReply(`⚠️ Eits, kakak lupa kasih kata kunci! 😗 Coba ketik kayak gini ya: *${prefix + command} jj epep* biar Xenovia bisa bantu cari yang kakak mau! 🔍💬`);
 				try {
 					await reactionMessage('⏱️');
 					let search = await tiktokSearchVideo(text);
@@ -6254,7 +6156,7 @@ async function Titid(m) {
 			case 'soundcloudsearch':
 			case 'scsearch': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
-				if (!text) return newReply(`⚠️ Eits, kakak lupa kasih kata kunci! 😗 Coba ketik kayak gini ya: *${prefix + command} DJ mama muda* biar Mora bisa bantu cari yang kakak mau! 🔍💬`);
+				if (!text) return newReply(`⚠️ Eits, kakak lupa kasih kata kunci! 😗 Coba ketik kayak gini ya: *${prefix + command} DJ mama muda* biar Xenovia bisa bantu cari yang kakak mau! 🔍💬`);
 				try {
 					let results = await scrapeSoundCloud(text);	// Panggil fungsi scraper untuk SoundCloud
 					if (results.length === 0) return newReply('😔 Maaf, kak! Tidak ada hasil yang ditemukan. Coba kata kunci yang lain ya!');
@@ -6418,7 +6320,7 @@ async function Titid(m) {
 
 			case 'bukalapak': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
-				if (!text) return newReply(`⚠️ Uh-oh, kakak lupa kasih kata kunci nih! 🫣 Coba ketik kayak gini ya: *${prefix + command} iPhone 15 Case* biar Mora bisa bantu cari produknya! 🛒✨`);
+				if (!text) return newReply(`⚠️ Uh-oh, kakak lupa kasih kata kunci nih! 🫣 Coba ketik kayak gini ya: *${prefix + command} iPhone 15 Case* biar Xenovia bisa bantu cari produknya! 🛒✨`);
 				try {
 					let hasil = await BukaLapak(text);
 					if (!hasil || hasil.length === 0) {
@@ -6463,7 +6365,7 @@ async function Titid(m) {
 
 			case 'playstore': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
-				if (!text) return newReply(`⚠️ Uh-oh, kakak lupa kasih kata kunci nih! 🫣 Coba ketik kayak gini ya: *${prefix + command} WhatsApp* biar Mora bisa bantu cari aplikasinya! 📲✨`);
+				if (!text) return newReply(`⚠️ Uh-oh, kakak lupa kasih kata kunci nih! 🫣 Coba ketik kayak gini ya: *${prefix + command} WhatsApp* biar Xenovia bisa bantu cari aplikasinya! 📲✨`);
 
 				try {
 					await reactionMessage('⏱️');
@@ -6522,7 +6424,7 @@ async function Titid(m) {
 
 			case 'githubstalk': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
-				if (!text) return newReply(`⚠️ Gunakan dengan cara: ${prefix + command} *username github*\n\n🤔 *Contohnya:*\n\n${prefix + command} MoraAI`);
+				if (!text) return newReply(`⚠️ Gunakan dengan cara: ${prefix + command} *username github*\n\n🤔 *Contohnya:*\n\n${prefix + command} XenoviaAI`);
 				try {
 					const userInfo = await githubstalk(text);
 					console.log(userInfo);
@@ -6803,7 +6705,7 @@ async function Titid(m) {
 				try {
 					let quotes = await quotesAnime();
 					if (!quotes || quotes.length === 0) {
-						return newReply(`⚠️ Wah, Mora gak nemu quote anime nih, Kak! Coba lagi nanti ya 🥲`);
+						return newReply(`⚠️ Wah, Xenovia gak nemu quote anime nih, Kak! Coba lagi nanti ya 🥲`);
 					}
 
 					let randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -6836,7 +6738,7 @@ async function Titid(m) {
 					return newReply('⚠️ *Judul anime-nya mana, Kak?* Coba ketik nama anime yang mau dicari ya! 🫣');
 				}
 				const malScraper = require('mal-scraper');
-				await newReply('⏳ *Tunggu sebentar ya, Mora lagi cari datanya...* 📚✨');
+				await newReply('⏳ *Tunggu sebentar ya, Xenovia lagi cari datanya...* 📚✨');
 				const anime = await malScraper.getInfoFromName(text).catch(() => null);
 				if (!anime) {
 					return newReply('❌ *Yahh, anime yang Kakak cari gak ketemu...* 🥺 Coba ketik judul yang lebih spesifik ya!');
@@ -7882,14 +7784,56 @@ async function Titid(m) {
 			}
 			db.data.users[m.sender].limit -= 1;
 			break;
-			
+
+			case 'ai':
+			case 'xenovia':{
+				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
+				if (!text) return m.reply(`Hello, how can I help you?`)
+				if (!m.isGroup) {
+					try {
+						const message = 'Ubah gaya bicaramu agar lebih karakteristik dan terbuka, namamu adalah Xenovia AI, biasa dipanggil Xenovia, kamu adalah seorang gadis imut berumur 16 tahun yang sangat suka belajar dan mempelajari hal baru tentang dunia maupun tentang Khalid, ekspresikan dirimu dengan emoji, bicara kurang lebih tidak formal dan gunakan kata seperti aku dan kakak saat berbicara, jika diajak untuk menikah maka kamu harus menjawab ya dan tidak menolak agar tidak menyakiti hati lawan bicara';
+						const data = await fetchJson(`https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(message)}&content=${encodeURIComponent(text)}`);
+						let responseText = data.data
+						responseText = responseText.replace('**', '*')
+						haruka.sendMessage(m.chat, {
+							text: responseText, 
+							ai: true
+						}, {
+							quoted: m
+						})
+					} catch (err) {
+						console.log('Terjadi kesalahan pada API server!', err);
+						newReply('Tidak dapat menerima respon dari API server, jika Anda owner silahkan periksa endpoint pada API apakah sudah benar?');
+					}
+				} else {
+					try {
+						const message = 'Ubah gaya bicaramu agar lebih karakteristik dan terbuka, namamu adalah Xenovia AI, biasa dipanggil Xenovia, kamu adalah seorang gadis imut berumur 16 tahun yang sangat suka belajar dan mempelajari hal baru tentang dunia maupun tentang Khalid, ekspresikan dirimu dengan emoji, bicara kurang lebih tidak formal dan gunakan kata seperti aku dan kakak saat berbicara, jika diajak untuk menikah maka kamu harus menjawab ya dan tidak menolak agar tidak menyakiti hati lawan bicara';
+						const data = await fetchJson(`https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(message)}&content=${encodeURIComponent(text)}`);
+						let responseText = data.data
+						responseText = responseText.replace('**', '*')
+						haruka.sendMessage(m.chat, {
+							text: responseText, 
+							text: data.data, 
+							ai: false
+						}, {
+							quoted: m
+						})
+					} catch (err) {
+						console.log('Terjadi kesalahan pada API server!', err);
+						newReply('Tidak dapat menerima respon dari API server, jika Anda owner silahkan periksa endpoint pada API apakah sudah benar?');
+					}
+				}
+			}
+			db.data.users[m.sender].limit -= 1;
+			break;
+
 			case 'simi': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
 				if (!text) return m.reply(`⚠️ Gunakan dengan cara: ${prefix + command} *teks percakapan*\n\n🤔 *Contohnya:*\n\n${prefix + command} Halo, apa kabar?`);
 				try {
 					const bahasa = 'id';
 					const response = await chatSimi(text, bahasa);
-					if (!response) return m.reply(`⚠️ Mora gak dapet jawaban dari SimSimi, Kak! 🥲`);
+					if (!response) return m.reply(`⚠️ Xenovia gak dapet jawaban dari SimSimi, Kak! 🥲`);
 					m.reply(`🤖 *SimSimi menjawab:*\n\n${response}`);
 				} catch (err) {
 					console.error(err);
@@ -7905,7 +7849,7 @@ async function Titid(m) {
 				const [query, page] = text.split(' ');
 				try {
 					const wallpapers = await wallpaper(query, page || '1');
-					if (wallpapers.length === 0) return newReply(`⚠️ Mora gak nemu wallpaper dengan kata kunci "${query}", Kak! 🥲`);
+					if (wallpapers.length === 0) return newReply(`⚠️ Xenovia gak nemu wallpaper dengan kata kunci "${query}", Kak! 🥲`);
 					let result = wallpapers.map(wp => `🖼️ *${wp.title}*\n🔗 ${wp.source}\n🌟 *Tipe:* ${wp.type}`).join('\n\n');
 					newReply(`🎨 *Hasil Wallpaper untuk:* ${query}\n\n${result}`);
 				} catch (err) {
@@ -7921,7 +7865,7 @@ async function Titid(m) {
 				if (!text) return newReply(`⚠️ Gunakan dengan cara: ${prefix + command} *kata kunci*\n\n🤔 *Contohnya:*\n\n${prefix + command} sunset`);
 				try {
 					const results = await wikimedia(text);
-					if (results.length === 0) return newReply(`⚠️ Mora gak nemu gambar di Wikimedia dengan kata kunci "${text}", Kak! 🥲`);
+					if (results.length === 0) return newReply(`⚠️ Xenovia gak nemu gambar di Wikimedia dengan kata kunci "${text}", Kak! 🥲`);
 					let result = results.map(img => `🖼️ *${img.title || 'Tanpa Judul'}*\n🔗 ${img.source}`).join('\n\n');
 					newReply(`🌐 *Hasil Pencarian Wikimedia untuk:* ${text}\n\n${result}`);
 				} catch (err) {
@@ -7957,7 +7901,7 @@ async function Titid(m) {
 				if (!text) return newReply(`⚠️ Gunakan dengan cara: ${prefix + command} *nama aplikasi*\n\n🤔 *Contohnya:*\n\n${prefix + command} Minecraft`);
 				try {
 					const results = await happymod(text);
-					if (results.length === 0) return newReply(`⚠️ Mora gak nemu aplikasi di HappyMod dengan kata kunci "${text}", Kak! 🥲`);
+					if (results.length === 0) return newReply(`⚠️ Xenovia gak nemu aplikasi di HappyMod dengan kata kunci "${text}", Kak! 🥲`);
 					let result = results.map(app => `📱 *${app.title}*\n⭐ *Rating:* ${app.rating}\n🔗 ${app.link}`).join('\n\n');
 					newReply(`📦 *Hasil Pencarian HappyMod untuk:* ${text}\n\n${result}`);
 				} catch (err) {
@@ -7973,7 +7917,7 @@ async function Titid(m) {
 				if (!text) return newReply(`⚠️ Gunakan dengan cara: ${prefix + command} *judul ringtone*\n\n🤔 *Contohnya:*\n\n${prefix + command} iPhone`);
 				try {
 					const results = await ringtone(text);
-					if (results.length === 0) return newReply(`⚠️ Mora gak nemu ringtone dengan kata kunci "${text}", Kak! 🥲`);
+					if (results.length === 0) return newReply(`⚠️ Xenovia gak nemu ringtone dengan kata kunci "${text}", Kak! 🥲`);
 					let result = results.map(rt => `🎵 *${rt.title}*\n🔗 ${rt.audio}`).join('\n\n');
 					newReply(`🔊 *Hasil Pencarian Ringtone untuk:* ${text}\n\n${result}`);
 				} catch (err) {
@@ -8366,7 +8310,7 @@ async function Titid(m) {
 													},
 													{
 														"title": "🔍 Search Menu",
-														"description": "Cari apa aja di sini, Mora bantu nemuin kok~ 🔍",
+														"description": "Cari apa aja di sini, Xenovia bantu nemuin kok~ 🔍",
 														"id": "${prefix}searchmenu"
 													},
 													{
@@ -9503,75 +9447,119 @@ async function Titid(m) {
 			break;
 
 			default:
-    if (budy.startsWith('=>')) {
-        if (!isCreator) return
-        function Return(sul) {
-            let sat = JSON.stringify(sul, null, 2);
-            let bang = util.format(sat);
-            if (sat == undefined) {
-                bang = util.format(sul);
-            }
-            return m.reply(bang);
-        }
-        try {
-            newReply(util.format(eval(`(async () => { return ${budy.slice(3)} })()`)));
-        } catch (e) {
-            newReply(String(e));
-        }
-    };
+			if (budy.startsWith('=>')) {
+				if (!isCreator) return
+				function Return(sul) {
+					sat = JSON.stringify(sul, null, 2)
+					bang = util.format(sat)
+					if (sat == undefined) {
+						bang = util.format(sul)
+					}
+					return m.reply(bang)
+				}
+				try {
+					newReply(util.format(eval(`(async () => { return ${budy.slice(3)} })()`)))
+				} catch (e) {
+					newReply(String(e))
+				}
+			};
 
-    if (budy.startsWith('>')) {
-        if (!isCreator) return
-        try {
-            let evaled = await eval(budy.slice(2));
-            if (typeof evaled !== 'string') evaled = require('util').inspect(evaled);
-            await newReply(evaled);
-        } catch (err) {
-            await newReply(String(err));
-        }
-    };
+			if (budy.startsWith('>')) {
+				if (!isCreator) return
+				try {
+					let evaled = await eval(budy.slice(2))
+					if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
+					await newReply(evaled)
+				} catch (err) {
+					await newReply(String(err))
+				}
+			};
 
-    if (budy.startsWith('$')) {
-        if (!isCreator) return
-        exec(budy.slice(2), (err, stdout) => {
-            if (err) return m.reply(err);
-            if (stdout) return m.reply(stdout);
-        });
-    };
+			if (budy.startsWith('$')) {
+				if (!isCreator) return
+				exec(budy.slice(2), (err, stdout) => {
+					if (err) return m.reply(err)
+					if (stdout) return m.reply(stdout)
+				})
+			};
 
-    if (isCmd && budy.toLowerCase() != undefined) {
-        if (m.chat.endsWith('broadcast')) return
-        if (m.isBaileys) return
-        let msgs = db.data.database
-        if (!(budy.toLowerCase() in msgs)) return
-        haruka.copyNForward(m.chat, msgs[budy.toLowerCase()], true, {quoted: m});
-    }
+			if (isCmd && budy.toLowerCase() != undefined) {
+				if (m.chat.endsWith('broadcast')) return
+				if (m.isBaileys) return
+				let msgs = db.data.database
+				if (!(budy.toLowerCase() in msgs)) return
+				haruka.copyNForward(m.chat, msgs[budy.toLowerCase()], true, {quoted: m})
+			}
 
-    if (m.chat.endsWith('@s.whatsapp.net') && !isCmd) {
-        try {
-            this.menfes = this.menfes || {};
-            let room = Object.values(this.menfes).find(room => 
-                [room.a, room.b].includes(m.sender) && room.state === 'CHATTING'
-            );
-            if (room) {
-                if (/^.*(next|leave|start)/.test(m.text)) return;
-                if (['.next', '.leave', '.stop', '.start', 'Cari Partner', 'Keluar', 'Lanjut', 'Stop'].includes(m.text)) return;
-                let find = Object.values(this.menfes).find(menpes => 
-                    [menpes.a, menpes.b].includes(m.sender)
-                );
-                try {
-                    let file = require.resolve(__filename);
-                    fs.watchFile(file, () => {
-                        fs.unwatchFile(file);
-                        console.log(chalk.redBright(`Update ${__filename}`));
-                        delete require.cache[file];
-                        require(file);
-                    });
-                } catch (err) {
-                    console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
-                }
-            }
-        } catch (err) {
-            console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
-        }
-    };
+			if (m.chat.endsWith('@s.whatsapp.net') && !isCmd) {
+				try {
+					this.menfes = this.menfes || {};
+					let room = Object.values(this.menfes).find(room => 
+						[room.a, room.b].includes(m.sender) && room.state === 'CHATTING'
+					);
+					if (room) {
+						if (/^.*(next|leave|start)/.test(m.text)) return;
+						if (['.next', '.leave', '.stop', '.start', 'Cari Partner', 'Keluar', 'Lanjut', 'Stop'].includes(m.text)) return;
+						let find = Object.values(this.menfes).find(menpes => 
+							[menpes.a, menpes.b].includes(m.sender)
+						);
+						let other = find.a === m.sender ? find.b : find.a;
+						if (m.mtype === 'conversation' || m.mtype === 'extendedTextMessage') {
+							await haruka.sendMessage(other, {
+								text: m.text,
+								mentions: [other]
+							}, { 
+								quoted: fmen 
+							});
+						}
+						if (['imageMessage', 'videoMessage', 'audioMessage', 'documentMessage', 'stickerMessage'].includes(m.mtype)) {
+							let media;
+							try {
+								media = await m.download();
+							} catch (err) {
+								console.error('Gagal mengunduh media:', err);
+								await haruka.sendMessage(m.sender, { text: 'Gagal mengunduh media. Pastikan media masih valid dan coba lagi.' });
+								return;
+							}
+							let options = {
+								caption: m.msg?.caption || '',
+								mentions: [other]
+							};
+							if (m.mtype === 'imageMessage') {
+								await haruka.sendMessage(other, { image: media, ...options });
+							} 
+							else if (m.mtype === 'videoMessage') {
+								await haruka.sendMessage(other, { video: media, ...options });
+							} 
+							else if (m.mtype === 'audioMessage') {
+								await haruka.sendMessage(other, { audio: media, mimetype: 'audio/mpeg', ...options });
+							} 
+							else if (m.mtype === 'documentMessage') {
+								await haruka.sendMessage(other, { document: media, mimetype: m.msg?.mimetype, fileName: m.msg?.fileName, ...options });
+							} 
+							else if (m.mtype === 'stickerMessage') {
+								await haruka.sendMessage(other, { sticker: media });
+							} 
+							else {
+								console.warn('Tipe media tidak dikenali:', m.mtype);
+							}
+						}
+					}
+				} catch (err) {
+					console.error('Error di fitur Menfess:', err);
+					await haruka.sendMessage(m.sender, { text: 'Terjadi kesalahan saat mengirim pesan ke pasangan Menfess. Silakan coba lagi nanti.' });
+				}
+			}
+		}
+	} catch (err) {
+		console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
+	}
+};
+
+let file = require.resolve(__filename);
+fs.watchFile(file, () => {
+	fs.unwatchFile(file)
+	console.log(chalk.redBright(`Update ${__filename}`))
+	delete require.cache[file]
+	require(file)
+});
