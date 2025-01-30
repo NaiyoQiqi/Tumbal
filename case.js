@@ -960,41 +960,36 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 				if (lastInteraction > 21600000) {
 					db.data.users[m.sender].pctime = new Date().getTime();
 
-					if (m.sender === '6285655548594@s.whatsapp.net') {
-						await haruka.sendMessage(m.chat, { 
-							text: `Halo kak ${pushname}, senang banget bisa ngobrol lagi! Ada yang bisa aku bantu hari ini? 😊`, 
-							ai: true 
-						});
-						haruka.sendMessage(m.chat, { 
-							text: `Ketik *.menu* untuk melihat menu dan pilih fitur yang kamu butuhkan! 💬`, 
-							ai: true 
-						});
-					} 
-
-					else if (m.sender === '6283834312169@s.whatsapp.net') {
-						await haruka.sendMessage(m.chat, { 
-							text: `Ehh... ada kak Viona nih, kakak orang yang di spesialin owner aku itu kan? 🤔\nKalo iya, wahhh makasih banget udah mampir ke sini ya, Kak! 🤭❤️`, 
-							ai: true 
-						});
-						haruka.sendMessage(m.chat, { 
-							text: `Untuk mulai, ketik *.menu* agar aku bisa bantu dengan fitur-fitur yang ada! 💬`, 
-							ai: true 
-						});
-					}
-
-					else {
-						await haruka.sendMessage(m.chat, { 
-							text: `Halo kak ${pushname}, lama gak ngobrol nih! Ada yang bisa aku bantu? 😊`, 
-							ai: true 
-						});
-						haruka.sendMessage(m.chat, { 
-							text: `Ketik *.menu* untuk melihat menu yang tersedia dan pilih fitur yang kamu butuhkan! 💬`, 
-							ai: true 
-						});
-					}
-				}
-			}
-		}
+				async function handleMessage(m) {
+    if (m.sender === '6285655548594@s.whatsapp.net') {
+        await haruka.sendMessage(m.chat, { 
+            text: `Halo kak ${pushname}, senang banget bisa ngobrol lagi! Ada yang bisa aku bantu hari ini? 😊`, 
+            ai: true 
+        });
+        await haruka.sendMessage(m.chat, { 
+            text: `Ketik *.menu* untuk melihat menu dan pilih fitur yang kamu butuhkan! 💬`, 
+            ai: true 
+        });
+    } else if (m.sender === '6283834312169@s.whatsapp.net') {
+        await haruka.sendMessage(m.chat, { 
+            text: `Ehh... ada kak Viona nih, kakak orang yang di spesialin owner aku itu kan? 🤔\nKalo iya, wahhh makasih banget udah mampir ke sini ya, Kak! 🤭❤️`, 
+            ai: true 
+        });
+        await haruka.sendMessage(m.chat, { 
+            text: `Untuk mulai, ketik *.menu* agar aku bisa bantu dengan fitur-fitur yang ada! 💬`, 
+            ai: true 
+        });
+    } else {
+        await haruka.sendMessage(m.chat, { 
+            text: `Halo kak ${pushname}, lama gak ngobrol nih! Ada yang bisa aku bantu? 😊`, 
+            ai: true 
+        });
+        await haruka.sendMessage(m.chat, { 
+            text: `Ketik *.menu* untuk melihat menu yang tersedia dan pilih fitur yang kamu butuhkan! 💬`, 
+            ai: true 
+        });
+    }
+}
 
 		if (!haruka.public) {
 			if (!isCreator && !m.key.fromMe) return;
