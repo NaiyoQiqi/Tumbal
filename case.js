@@ -9567,24 +9567,24 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 							} 
 							else {
 								console.warn('Tipe media tidak dikenali:', m.mtype);
-							}
-						}
-					}
-				} catch (err) {
-					console.error('Error di fitur Menfess:', err);
-					await haruka.sendMessage(m.sender, { text: 'Terjadi kesalahan saat mengirim pesan ke pasangan Menfess. Silakan coba lagi nanti.' });
-				}
-			}
-		}
-	} catch (err) {
-		console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
-	}
-};
+    }
+
+} catch (err) {
+    console.error('Error di fitur Menfess:', err);
+    await haruka.sendMessage(m.sender, { text: 'Terjadi kesalahan saat mengirim pesan ke pasangan Menfess. Silakan coba lagi nanti.' });
+}
+
+try {
+    // Kode lainnya yang mungkin menyebabkan error
+
+} catch (err) {
+    console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
+}
 
 let file = require.resolve(__filename);
 fs.watchFile(file, () => {
-	fs.unwatchFile(file)
-	console.log(chalk.redBright(`Update ${__filename}`))
-	delete require.cache[file]
-	require(file)
+    fs.unwatchFile(file);
+    console.log(chalk.redBright(`Update ${__filename}`));
+    delete require.cache[file];
+    require(file);
 });
