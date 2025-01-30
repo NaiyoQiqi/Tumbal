@@ -15,7 +15,7 @@ global.author = 'Xenovia AI' // Nama Author
 global.creator = '6289601671818@s.whatsapp.net' // Nomor Creator
 global.premium = ['6289601671818', '628988219165', '6281227978977'] // User Premium
 global.hituet = 0 // Hit Command
-global.prefa = ''; // Prefix
+global.prefa = '.'; // Prefix
 global.tempatDB = 'database.json'; // Tempat Database
 
 global.saluran = '' // ID Saluran Kamu
