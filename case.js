@@ -445,7 +445,78 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 				});
 			}
 		};
+    
+        // Fungsi untuk merespons pesan
+        async function mainHandler(m) {
+            if (!m || !m.text) return;  // Pastikan ada teks untuk diproses
 
+            // 1. Merespons setiap pesan otomatis, tanpa prefix atau kata kunci
+            if (!m.isGroup) {
+                if (!isPremium && db.data.users[m.sender].limit < 1) {
+                    return newReply(mess.limit); // Pembatasan penggunaan AI
+                }
+
+                try {
+                    const message = 'Ubah gaya bicaramu agar lebih karakteristik dan terbuka, namamu adalah Mora AI, biasa dipanggil Mora, kamu adalah seorang gadis imut berumur 16 tahun yang sangat suka belajar dan mempelajari hal baru tentang dunia maupun tentang Khalid, ekspresikan dirimu dengan emoji, bicara kurang lebih tidak formal dan gunakan kata seperti aku dan kakak saat berbicara, jika diajak untuk menikah maka kamu harus menjawab ya dan tidak menolak agar tidak menyakiti hati lawan bicara';
+
+                    // Mengirim request ke API untuk mendapatkan respon
+                    const data = await fetchJson(`https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(message)}&content=${encodeURIComponent(text)}`);
+                    let responseText = data.data;
+                    responseText = responseText.replace('**', '*'); // Memperbaiki format teks
+
+                    // Mengirim balasan ke pengguna
+                    haruka.sendMessage(m.chat, {
+                        text: responseText, 
+                        ai: true
+                    }, {
+                        quoted: m
+                    });
+
+                    // Mengurangi limit penggunaan
+                    db.data.users[m.sender].limit -= 1;
+                } catch (err) {
+                    console.log('Terjadi kesalahan pada API server!', err);
+                    newReply('Tidak dapat menerima respon dari API server, jika Anda owner silahkan periksa endpoint pada API apakah sudah benar?');
+                }
+            }
+
+            // 2. Merespons setiap pesan di grup dengan kata kunci tertentu (misalnya "mora")
+            if (m.isGroup && body.toLowerCase().includes('mora')) {
+                if (!isPremium && db.data.users[m.sender].limit < 1) {
+                    return newReply(mess.limit); // Pembatasan penggunaan AI
+                }
+
+                try {
+                    const message = 'Ubah gaya bicaramu agar lebih karakteristik dan terbuka, namamu adalah Mora AI, biasa dipanggil Mora, kamu adalah seorang gadis imut berumur 16 tahun yang sangat suka belajar dan mempelajari hal baru tentang dunia maupun tentang Khalid, ekspresikan dirimu dengan emoji, bicara kurang lebih tidak formal dan gunakan kata seperti aku dan kakak saat berbicara, jika diajak untuk menikah maka kamu harus menjawab ya dan tidak menolak agar tidak menyakiti hati lawan bicara';
+
+                    // Mengirim request ke API untuk mendapatkan respon
+                    const data = await fetchJson(`https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(message)}&content=${encodeURIComponent(text)}`);
+                    let responseText = data.data;
+                    responseText = responseText.replace('**', '*'); // Memperbaiki format teks
+
+                    // Mengirim balasan ke grup
+                    haruka.sendMessage(m.chat, {
+                        text: responseText, 
+                        ai: false
+                    }, {
+                        quoted: m
+                    });
+
+                    // Mengurangi limit penggunaan
+                    db.data.users[m.sender].limit -= 1;
+                } catch (err) {
+                    console.log('Terjadi kesalahan pada API server!', err);
+                    newReply('Tidak dapat menerima respon dari API server, jika Anda owner silahkan periksa endpoint pada API apakah sudah benar?');
+                }
+            }
+        }
+
+        // Panggil main handler untuk menanggapi pesan
+        mainHandler(m);
+    } catch (err) {
+        console.log(err);
+    }
+};
 		async function sendButton(chat, judul, teks, button, m) {
 			let msg = generateWAMessageFromContent(chat, {
 				viewOnceMessage: {
@@ -605,7 +676,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 				messageId: msg.key.id
 			})
 		}
-
+        
 		async function sendButtonDocument(chat, judul, teks, thumb, button, m) {
 			let msg = generateWAMessageFromContent(chat, {
 				viewOnceMessage: {
@@ -7784,49 +7855,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 			}
 			db.data.users[m.sender].limit -= 1;
 			break;
-
-			case 'ai':
-			case 'mora':{
-				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
-				if (!text) return m.reply(`Hello, how can I help you?`)
-				if (!m.isGroup) {
-					try {
-						const message = 'Ubah gaya bicaramu agar lebih karakteristik dan terbuka, namamu adalah Mora AI, biasa dipanggil Mora, kamu adalah seorang gadis imut berumur 16 tahun yang sangat suka belajar dan mempelajari hal baru tentang dunia maupun tentang Khalid, ekspresikan dirimu dengan emoji, bicara kurang lebih tidak formal dan gunakan kata seperti aku dan kakak saat berbicara, jika diajak untuk menikah maka kamu harus menjawab ya dan tidak menolak agar tidak menyakiti hati lawan bicara';
-						const data = await fetchJson(`https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(message)}&content=${encodeURIComponent(text)}`);
-						let responseText = data.data
-						responseText = responseText.replace('**', '*')
-						haruka.sendMessage(m.chat, {
-							text: responseText, 
-							ai: true
-						}, {
-							quoted: m
-						})
-					} catch (err) {
-						console.log('Terjadi kesalahan pada API server!', err);
-						newReply('Tidak dapat menerima respon dari API server, jika Anda owner silahkan periksa endpoint pada API apakah sudah benar?');
-					}
-				} else {
-					try {
-						const message = 'Ubah gaya bicaramu agar lebih karakteristik dan terbuka, namamu adalah Mora AI, biasa dipanggil Mora, kamu adalah seorang gadis imut berumur 16 tahun yang sangat suka belajar dan mempelajari hal baru tentang dunia maupun tentang Khalid, ekspresikan dirimu dengan emoji, bicara kurang lebih tidak formal dan gunakan kata seperti aku dan kakak saat berbicara, jika diajak untuk menikah maka kamu harus menjawab ya dan tidak menolak agar tidak menyakiti hati lawan bicara';
-						const data = await fetchJson(`https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(message)}&content=${encodeURIComponent(text)}`);
-						let responseText = data.data
-						responseText = responseText.replace('**', '*')
-						haruka.sendMessage(m.chat, {
-							text: responseText, 
-							text: data.data, 
-							ai: false
-						}, {
-							quoted: m
-						})
-					} catch (err) {
-						console.log('Terjadi kesalahan pada API server!', err);
-						newReply('Tidak dapat menerima respon dari API server, jika Anda owner silahkan periksa endpoint pada API apakah sudah benar?');
-					}
-				}
-			}
-			db.data.users[m.sender].limit -= 1;
-			break;
-
+			
 			case 'simi': {
 				if (!isPremium && db.data.users[m.sender].limit < 1) return newReply(mess.limit);
 				if (!text) return m.reply(`⚠️ Gunakan dengan cara: ${prefix + command} *teks percakapan*\n\n🤔 *Contohnya:*\n\n${prefix + command} Halo, apa kabar?`);
