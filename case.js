@@ -269,7 +269,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 		} = m
 		const body = m.body
 		const budy = m.text
-		const prefix = ""
+		const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : prefa
 		const isCmd = body.startsWith(prefix)
 		const isCommand = isCmd ? body.slice(1).trim().split(' ').shift().toLowerCase() : ""
 		const command = isCmd ? body.slice(1).trim().split(' ').shift().toLowerCase() : ''
