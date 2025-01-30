@@ -9559,10 +9559,7 @@ async function Titid(m) {
 						let find = Object.values(this.menfes).find(menpes => 
 							[menpes.a, menpes.b].includes(m.sender)
 						);
-						    } catch (err) {
-        console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
-    }
-
+						try {
     let file = require.resolve(__filename);
     fs.watchFile(file, () => {
         fs.unwatchFile(file);
@@ -9570,5 +9567,6 @@ async function Titid(m) {
         delete require.cache[file];
         require(file);
     });
-};
-						
+} catch (err) {
+    console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
+						}
