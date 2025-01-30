@@ -752,7 +752,38 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 		const pickRandom = (arr) => {
 			return arr[Math.floor(Math.random() * arr.length)]
 		}
+async function Titid(m) {
+        try {
+            // Define the appropriate value for `other`
+            let other = 'target_contact_id'; // Replace with actual target contact ID
+            
+            // Define the appropriate value for `media`
+            let media = await m.download(); // Assuming m has a method to download media
+            
+            // Define the appropriate value for `options`
+            let options = {
+                caption: m.msg?.caption || '',
+                mentions: [other]
+            };
 
+            if (m.mtype === 'imageMessage') {
+                await haruka.sendMessage(other, { image: media, ...options });
+            } else if (m.mtype === 'videoMessage') {
+                await haruka.sendMessage(other, { video: media, ...options });
+            } else if (m.mtype === 'audioMessage') {
+                await haruka.sendMessage(other, { audio: media, mimetype: 'audio/mpeg', ...options });
+            } else if (m.mtype === 'documentMessage') {
+                await haruka.sendMessage(other, { document: media, mimetype: m.msg?.mimetype, fileName: m.msg?.fileName, ...options });
+            } else if (m.mtype === 'stickerMessage') {
+                await haruka.sendMessage(other, { sticker: media });
+            } else {
+                console.warn('Tipe media tidak dikenali:', m.mtype);
+            }
+        } catch (err) {
+            console.error('Error di fitur Menfess:', err);
+            await haruka.sendMessage(m.sender, { text: 'Terjadi kesalahan saat mengirim pesan ke pasangan Menfess. Silakan coba lagi nanti.' });
+        }
+}
 		try {
 			let isNumber = x => typeof x === 'number' && !isNaN(x);
 
