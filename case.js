@@ -9559,63 +9559,16 @@ async function Titid(m) {
 						let find = Object.values(this.menfes).find(menpes => 
 							[menpes.a, menpes.b].includes(m.sender)
 						);
-						let other = find.a === m.sender ? find.b : find.a;
-						if (m.mtype === 'conversation' || m.mtype === 'extendedTextMessage') {
-							await haruka.sendMessage(other, {
-								text: m.text,
-								mentions: [other]
-							}, { 
-								quoted: fmen 
-							});
-						}
-						if (['imageMessage', 'videoMessage', 'audioMessage', 'documentMessage', 'stickerMessage'].includes(m.mtype)) {
-							let media;
-							try {
-								media = await m.download();
-							} catch (err) {
-								console.error('Gagal mengunduh media:', err);
-								await haruka.sendMessage(m.sender, { text: 'Gagal mengunduh media. Pastikan media masih valid dan coba lagi.' });
-								return;
-							}
-							let options = {
-								caption: m.msg?.caption || '',
-								mentions: [other]
-							};
-							if (m.mtype === 'imageMessage') {
-								await haruka.sendMessage(other, { image: media, ...options });
-							} 
-							else if (m.mtype === 'videoMessage') {
-								await haruka.sendMessage(other, { video: media, ...options });
-							} 
-							else if (m.mtype === 'audioMessage') {
-								await haruka.sendMessage(other, { audio: media, mimetype: 'audio/mpeg', ...options });
-							} 
-							else if (m.mtype === 'documentMessage') {
-								await haruka.sendMessage(other, { document: media, mimetype: m.msg?.mimetype, fileName: m.msg?.fileName, ...options });
-							} 
-							else if (m.mtype === 'stickerMessage') {
-								await haruka.sendMessage(other, { sticker: media });
-							} 
-							else {
-								console.warn('Tipe media tidak dikenali:', m.mtype);
+						    } catch (err) {
+        console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
     }
 
-} catch (err) {
-    console.error('Error di fitur Menfess:', err);
-    await haruka.sendMessage(m.sender, { text: 'Terjadi kesalahan saat mengirim pesan ke pasangan Menfess. Silakan coba lagi nanti.' });
-}
-
-try {
-    // Kode lainnya yang mungkin menyebabkan error
-
-} catch (err) {
-    console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
-}
-
-let file = require.resolve(__filename);
-fs.watchFile(file, () => {
-    fs.unwatchFile(file);
-    console.log(chalk.redBright(`Update ${__filename}`));
-    delete require.cache[file];
-    require(file);
-});
+    let file = require.resolve(__filename);
+    fs.watchFile(file, () => {
+        fs.unwatchFile(file);
+        console.log(chalk.redBright(`Update ${__filename}`));
+        delete require.cache[file];
+        require(file);
+    });
+};
+						
