@@ -9503,70 +9503,75 @@ async function Titid(m) {
 			break;
 
 			default:
-			if (budy.startsWith('=>')) {
-				if (!isCreator) return
-				function Return(sul) {
-					sat = JSON.stringify(sul, null, 2)
-					bang = util.format(sat)
-					if (sat == undefined) {
-						bang = util.format(sul)
-					}
-					return m.reply(bang)
-				}
-				try {
-					newReply(util.format(eval(`(async () => { return ${budy.slice(3)} })()`)))
-				} catch (e) {
-					newReply(String(e))
-				}
-			};
+    if (budy.startsWith('=>')) {
+        if (!isCreator) return
+        function Return(sul) {
+            let sat = JSON.stringify(sul, null, 2);
+            let bang = util.format(sat);
+            if (sat == undefined) {
+                bang = util.format(sul);
+            }
+            return m.reply(bang);
+        }
+        try {
+            newReply(util.format(eval(`(async () => { return ${budy.slice(3)} })()`)));
+        } catch (e) {
+            newReply(String(e));
+        }
+    };
 
-			if (budy.startsWith('>')) {
-				if (!isCreator) return
-				try {
-					let evaled = await eval(budy.slice(2))
-					if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
-					await newReply(evaled)
-				} catch (err) {
-					await newReply(String(err))
-				}
-			};
+    if (budy.startsWith('>')) {
+        if (!isCreator) return
+        try {
+            let evaled = await eval(budy.slice(2));
+            if (typeof evaled !== 'string') evaled = require('util').inspect(evaled);
+            await newReply(evaled);
+        } catch (err) {
+            await newReply(String(err));
+        }
+    };
 
-			if (budy.startsWith('$')) {
-				if (!isCreator) return
-				exec(budy.slice(2), (err, stdout) => {
-					if (err) return m.reply(err)
-					if (stdout) return m.reply(stdout)
-				})
-			};
+    if (budy.startsWith('$')) {
+        if (!isCreator) return
+        exec(budy.slice(2), (err, stdout) => {
+            if (err) return m.reply(err);
+            if (stdout) return m.reply(stdout);
+        });
+    };
 
-			if (isCmd && budy.toLowerCase() != undefined) {
-				if (m.chat.endsWith('broadcast')) return
-				if (m.isBaileys) return
-				let msgs = db.data.database
-				if (!(budy.toLowerCase() in msgs)) return
-				haruka.copyNForward(m.chat, msgs[budy.toLowerCase()], true, {quoted: m})
-			}
+    if (isCmd && budy.toLowerCase() != undefined) {
+        if (m.chat.endsWith('broadcast')) return
+        if (m.isBaileys) return
+        let msgs = db.data.database
+        if (!(budy.toLowerCase() in msgs)) return
+        haruka.copyNForward(m.chat, msgs[budy.toLowerCase()], true, {quoted: m});
+    }
 
-			if (m.chat.endsWith('@s.whatsapp.net') && !isCmd) {
-				try {
-					this.menfes = this.menfes || {};
-					let room = Object.values(this.menfes).find(room => 
-						[room.a, room.b].includes(m.sender) && room.state === 'CHATTING'
-					);
-					if (room) {
-						if (/^.*(next|leave|start)/.test(m.text)) return;
-						if (['.next', '.leave', '.stop', '.start', 'Cari Partner', 'Keluar', 'Lanjut', 'Stop'].includes(m.text)) return;
-						let find = Object.values(this.menfes).find(menpes => 
-							[menpes.a, menpes.b].includes(m.sender)
-						);
-						try {
-    let file = require.resolve(__filename);
-    fs.watchFile(file, () => {
-        fs.unwatchFile(file);
-        console.log(chalk.redBright(`Update ${__filename}`));
-        delete require.cache[file];
-        require(file);
-    });
-} catch (err) {
-    console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
-}
+    if (m.chat.endsWith('@s.whatsapp.net') && !isCmd) {
+        try {
+            this.menfes = this.menfes || {};
+            let room = Object.values(this.menfes).find(room => 
+                [room.a, room.b].includes(m.sender) && room.state === 'CHATTING'
+            );
+            if (room) {
+                if (/^.*(next|leave|start)/.test(m.text)) return;
+                if (['.next', '.leave', '.stop', '.start', 'Cari Partner', 'Keluar', 'Lanjut', 'Stop'].includes(m.text)) return;
+                let find = Object.values(this.menfes).find(menpes => 
+                    [menpes.a, menpes.b].includes(m.sender)
+                );
+                try {
+                    let file = require.resolve(__filename);
+                    fs.watchFile(file, () => {
+                        fs.unwatchFile(file);
+                        console.log(chalk.redBright(`Update ${__filename}`));
+                        delete require.cache[file];
+                        require(file);
+                    });
+                } catch (err) {
+                    console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
+                }
+            }
+        } catch (err) {
+            console.log(chalk.yellow.bold("[ ERROR ] case.js :\n") + chalk.redBright(util.format(err)));
+        }
+    };
