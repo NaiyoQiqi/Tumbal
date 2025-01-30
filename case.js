@@ -1036,6 +1036,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 			return haruka.updateBlockStatus(m.sender, 'block');
 		}
 
+		async function Kontol(m) {			
 		if (!m.sender.startsWith(`${antiforeignnumber}`) && db.data.chats[m.chat].antiforeignnum === true) { 
 			if (isCreator || isAdmins || !isBotAdmins) return;
 			haruka.sendMessage(m.chat, { text: `Maaf, kamu akan dihapus karena admin/owner grup telah mengaktifkan anti-nomor asing, hanya kode negara +${antiforeignnumber} yang boleh bergabung` }, { quoted: m });
