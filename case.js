@@ -7814,7 +7814,7 @@ module.exports = haruka = async (haruka, m, msg, chatUpdate, store) => {
 						haruka.sendMessage(m.chat, {
 							text: responseText, 
 							text: data.data, 
-							ai: false
+							ai: true
 						}, {
 							quoted: m
 						})
