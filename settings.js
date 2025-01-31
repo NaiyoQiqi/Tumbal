@@ -80,7 +80,7 @@ global.mess = {
 };
 
 global.thumb = fs.readFileSync('./media/icon.png'); // Buffer Image
-global.thumbUrl = 'https://i.ibb.co.com/p2nKgqP/image.png'; // Url Image
+global.thumbUrl = 'https://ibb.co.com/Hfs0nrP2'; // Url Image
 
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
